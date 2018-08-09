@@ -98,7 +98,7 @@ public let HeimdallrErrorNotAuthorized = 2
     /// - parameter password: The resource owner's password.
     /// - parameter headers: The values for header in request.
     /// - parameter completion: A callback to invoke when the request completed.
-    open func requestAccessToken(username: String, password: String, headers: [String: String]? = nil, completion: @escaping (Result<Void, NSError>) -> Void) {
+    open func requestAccessToken(username: String, password: String, headers: [String: String?]? = nil, completion: @escaping (Result<Void, NSError>) -> Void) {
         requestAccessToken(grant: .resourceOwnerPasswordCredentials(username, password), headers: headers) { result in
             completion(result.map { _ in return })
         }
@@ -112,7 +112,7 @@ public let HeimdallrErrorNotAuthorized = 2
     /// - parameter parameters: The required parameters for the external grant
     /// - parameter headers: The values for header in request.
     /// - parameter completion: A callback to invoke when the request completed.
-    open func requestAccessToken(grantType: String, headers: [String: String]? = nil, parameters: [String: String], completion: @escaping (Result<Void, NSError>) -> Void) {
+    open func requestAccessToken(grantType: String, headers: [String: String?]? = nil, parameters: [String: String], completion: @escaping (Result<Void, NSError>) -> Void) {
         requestAccessToken(grant: .extension(grantType, parameters), headers: headers) { result in
             completion(result.map { _ in return })
         }
