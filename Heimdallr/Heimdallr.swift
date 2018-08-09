@@ -96,9 +96,10 @@ public let HeimdallrErrorNotAuthorized = 2
     ///
     /// - parameter username: The resource owner's username.
     /// - parameter password: The resource owner's password.
+    /// - parameter headers: The values for header in request.
     /// - parameter completion: A callback to invoke when the request completed.
-    open func requestAccessToken(username: String, password: String, completion: @escaping (Result<Void, NSError>) -> Void) {
-        requestAccessToken(grant: .resourceOwnerPasswordCredentials(username, password)) { result in
+    open func requestAccessToken(username: String, password: String, headers: [String: String]? = nil, completion: @escaping (Result<Void, NSError>) -> Void) {
+        requestAccessToken(grant: .resourceOwnerPasswordCredentials(username, password), headers: headers) { result in
             completion(result.map { _ in return })
         }
     }
@@ -109,9 +110,10 @@ public let HeimdallrErrorNotAuthorized = 2
     ///
     /// - parameter grantType: The grant type URI of the extension grant
     /// - parameter parameters: The required parameters for the external grant
+    /// - parameter headers: The values for header in request.
     /// - parameter completion: A callback to invoke when the request completed.
-    open func requestAccessToken(grantType: String, parameters: [String: String], completion: @escaping (Result<Void, NSError>) -> Void) {
-        requestAccessToken(grant: .extension(grantType, parameters)) { result in
+    open func requestAccessToken(grantType: String, headers: [String: String]? = nil, parameters: [String: String], completion: @escaping (Result<Void, NSError>) -> Void) {
+        requestAccessToken(grant: .extension(grantType, parameters), headers: headers) { result in
             completion(result.map { _ in return })
         }
     }
@@ -123,8 +125,9 @@ public let HeimdallrErrorNotAuthorized = 2
     /// an identifier is set, it is encoded as parameter.
     ///
     /// - parameter grant: The authorization grant (e.g., refresh).
+    /// - parameter headers: The values for header in request.
     /// - parameter completion: A callback to invoke when the request completed.
-    private func requestAccessToken(grant: OAuthAuthorizationGrant, completion: @escaping (Result<OAuthAccessToken, NSError>) -> Void) {
+    private func requestAccessToken(grant: OAuthAuthorizationGrant, headers: [String: String?]? = nil, completion: @escaping (Result<OAuthAccessToken, NSError>) -> Void) {
         var request = URLRequest(url: tokenURL)
 
         var parameters = grant.parameters
@@ -138,6 +141,11 @@ public let HeimdallrErrorNotAuthorized = 2
 
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        if let headers = headers {
+            for (key, value) in headers {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+        }
         request.setHTTPBody(parameters: parameters as [String: AnyObject])
 
         httpClient.sendRequest(request) { data, response, error in
