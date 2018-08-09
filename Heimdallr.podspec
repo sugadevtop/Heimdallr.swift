@@ -26,6 +26,6 @@ Pod::Spec.new do |spec|
     subspec.dependency 'Result', '~> 3.0'
     subspec.framework = 'Foundation'
 
-    subspec.source_files = 'Heimdallr/Core/*.swift'
+    subspec.source_files = 'Heimdallr/*.swift'
   end
 end
