@@ -8,6 +8,7 @@ public let OAuthErrorInvalidGrant = 3
 public let OAuthErrorUnauthorizedClient = 4
 public let OAuthErrorUnsupportedGrantType = 5
 public let OAuthErrorInvalidScope = 6
+public let OAuthErrorInvalidCredentials = 7
 
 public let OAuthURIErrorKey = "OAuthURIErrorKey"
 
@@ -18,6 +19,7 @@ public enum OAuthErrorCode: String {
     case UnauthorizedClient = "unauthorized_client"
     case UnsupportedGrantType = "unsupported_grant_type"
     case InvalidScope = "invalid_scope"
+    case InvalidCredentials = "invalid_credentials"
 }
 
 public extension OAuthErrorCode {
@@ -35,6 +37,8 @@ public extension OAuthErrorCode {
             return OAuthErrorUnsupportedGrantType
         case .InvalidScope:
             return OAuthErrorInvalidScope
+        case .InvalidCredentials:
+            return OAuthErrorInvalidCredentials
         }
     }
 }
